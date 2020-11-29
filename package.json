@@ -1,0 +1,26 @@
+{
+  "name": "tln-graphql-mgr",
+  "version": "1.0.0",
+  "description": "graphql-mgr",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timlin1972/tln-graphql-mgr.git"
+  },
+  "keywords": [
+    "graphql-mgr",
+    "tln"
+  ],
+  "author": "Tim Lin <timlin1972@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timlin1972/tln-graphql-mgr/issues"
+  },
+  "homepage": "https://github.com/timlin1972/tln-graphql-mgr#readme",
+  "dependencies": {
+    "apollo-server": "^2.19.0"
+  }
+}

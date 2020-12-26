@@ -21,33 +21,38 @@ const TEST_RESOLVERS = {
 
 const DEF_LOGGER = null;
 const DEF_TEST = false;
+const DEF_I18N = null;
 
 const DEF_CONFIGS = {
   logger: DEF_LOGGER,
   test: DEF_TEST,
+  i18n: DEF_I18N,
 }
 
 class GraphqlMgr {
   constructor(configs=DEF_CONFIGS) {
     this.logger = configs.logger || DEF_LOGGER;
     this.test = configs.test || DEF_TEST;
+    this.i18n = configs.i18n || DEF_I18N;
+
+    if (!this.i18n) {
+      this.log('error', 'I18n must be provided.');
+      process.kill(process.pid, 'SIGTERM');
+      return;
+    }
 
     this.typeDefsResult = [];
     this.resolversResult = [];
 
     this.pubsub = new PubSub(); //  we want to use one pubsub for all
 
-    this.log('info', 'Initialized');
+    this.log('info', this.i18n.t('inited'));
   }
 
-  log = (level=DEF_LEVEL, msg) => {
-    if (this.logger !== null) {
-      this.logger.log(MODULE_NAME, level, msg)
-    }
-    else {
+  log = (level=DEF_LEVEL, msg) => 
+    this.logger ? 
+      this.logger.log(MODULE_NAME, level, msg) :
       console.log(`${level}: [${MODULE_NAME}] ${msg}`);
-    }
-  }
 
   addSchema({ typeDefs, resolvers }) {
     if (typeDefs) {
@@ -152,12 +157,10 @@ class GraphqlMgr {
     };
   }
 
-  toString = () => {
-    return `[${MODULE_NAME}]\n \
-      \tlogger: ${this.logger ? 'yes' : 'no'}\n \
-      \ttest: ${this.test}\n \
-      `;
-  }
+  toString = () => `[${MODULE_NAME}]\n\
+    \tlogger: ${this.logger ? 'yes' : 'no'}\n\
+    \ttest: ${this.test}\n\
+    `;
 }
 
 module.exports = GraphqlMgr;

@@ -35,24 +35,20 @@ class GraphqlMgr {
     this.test = configs.test || DEF_TEST;
     this.i18n = configs.i18n || DEF_I18N;
 
-    if (!this.i18n) {
-      this.log('error', 'I18n must be provided.');
-      process.kill(process.pid, 'SIGTERM');
-      return;
-    }
-
     this.typeDefsResult = [];
     this.resolversResult = [];
 
     this.pubsub = new PubSub(); //  we want to use one pubsub for all
 
-    this.log('info', this.i18n.t('inited'));
+    this.log('info', 'Initialized');
   }
 
-  log = (level=DEF_LEVEL, msg) => 
+  log = (level=DEF_LEVEL, msg) => {
+    const msgI18n = this.i18n ? this.i18n.t(msg) : msg;
     this.logger ? 
-      this.logger.log(MODULE_NAME, level, msg) :
-      console.log(`${level}: [${MODULE_NAME}] ${msg}`);
+      this.logger.log(MODULE_NAME, level, msgI18n) :
+      console.log(`${level}: [${MODULE_NAME}] ${msgI18n}`);
+  }
 
   addSchema({ typeDefs, resolvers }) {
     if (typeDefs) {
